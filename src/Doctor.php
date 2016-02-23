@@ -46,20 +46,19 @@
 
         function getPatients()
         {
-            $tasks = Array();
-            $returned_tasks = $GLOBALS['DB']->query("SELECT * FROM tasks WHERE doctor_id = {$this->getId()} ORDER BY due_date;");
-            foreach($returned_tasks as $task) {
-                $description = $task['description'];
-                $due_date = $task['due_date'];
-                $id = $task['id'];
-                $doctor_id = $task['doctor_id'];
-                $new_task = new Patient($description, $due_date, $id, $doctor_id);
-                array_push($tasks, $new_task);
+            $patients = Array();
+            $returned_patients = $GLOBALS['DB']->query("SELECT * FROM patients WHERE doctor_id = {$this->getId()} ORDER BY doctor_id;");
+            foreach($returned_patients as $patient) {
+                $name = $patient['name'];
+                $id = $patient['id'];
+                $doctor_id = $patient['doctor_id'];
+                $new_patient = new Patient($name, $id, $doctor_id);
+                array_push($patients, $new_patient);
             }
-            return $tasks;
+            return $patients;
         }
 
-        static function deleteCategories()
+        static function deleteAll()
         {
           $GLOBALS['DB']->exec("DELETE FROM doctors;");
         }

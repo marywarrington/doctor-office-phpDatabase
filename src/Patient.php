@@ -8,24 +8,19 @@ class Patient
 
     function __construct($patient_name, $patient_id = null, $patient_doctor_id)
     {
-        $this->description = $patient_name;
+        $this->name = $patient_name;
         $this->id = $patient_id;
         $this->doctor_id = $patient_doctor_id;
     }
 
-    function setDescription($new_description)
+    function setName($new_name)
     {
-        $this->description = (string) $new_description;
+        $this->name = (string) $new_name;
     }
 
-    function getDescription()
+    function getName()
     {
-        return $this->description;
-    }
-
-    function getDueDate()
-    {
-        return $this->due_date;
+        return $this->name;
     }
 
     function getId()
@@ -33,28 +28,27 @@ class Patient
         return $this->id;
     }
 
-    function getCategoryId()
+    function getDoctorId()
     {
         return $this->doctor_id;
     }
 
     function save()
     {
-        $GLOBALS['DB']->exec("INSERT INTO patients (description, due_date, doctor_id) VALUES ('{$this->getDescription()}', '{$this->getDueDate()}', {$this->getCategoryId()});");
+        $GLOBALS['DB']->exec("INSERT INTO patients (name, doctor_id) VALUES ('{$this->getName()}', {$this->getDoctorId()});");
         $this->id = $GLOBALS['DB']->lastInsertId();
     }
 
     static function getAll()
     {
-        $returned_patients = $GLOBALS['DB']->query("SELECT * FROM patients ORDER BY due_date;");
+        $returned_patients = $GLOBALS['DB']->query("SELECT * FROM patients;");
         $patients = array();
 
         foreach($returned_patients as $patient) {
-            $description = $patient['description'];
-            $due_date = $patient['due_date'];
+            $name = $patient['name'];
             $id = $patient['id'];
             $doctor_id = $patient['doctor_id'];
-            $new_patient = new Patient($description, $due_date, $id, $doctor_id);
+            $new_patient = new Patient($name, $id, $doctor_id);
             array_push($patients, $new_patient);
     }
         return $patients;
@@ -65,7 +59,7 @@ class Patient
         $GLOBALS['DB']->exec("DELETE FROM patients;");
     }
 
-    static function deleteFromCategory($doctor_id)
+    static function deleteFromDoctor($doctor_id)
     {
         $GLOBALS['DB']->exec("DELETE FROM patients WHERE doctor_id = {$doctor_id};");
     }
@@ -83,8 +77,8 @@ class Patient
         return $found_patient;
     }
 
-    static function findByDate($search_date)
-    {
+    // static function findByDate($search_date)
+    // {
         // $found_patient = null;
         // $patients = Patient::getAll();
         // foreach($patients as $patient) {
@@ -94,9 +88,9 @@ class Patient
         //     }
         // }
         // return $found_patient;
-        $GLOBALS['DB']->exec("SELECT * FROM patients WHERE search_date = {$due_date};");
-
-    }
+        // $GLOBALS['DB']->exec("SELECT * FROM patients WHERE ");
+// 
+    // }
 
 
 }

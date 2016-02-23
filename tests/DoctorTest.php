@@ -5,31 +5,31 @@
     * @backupStaticAttributes disabled
     */
 
-    require_once "src/Category.php";
-    require_once "src/Task.php";
+    require_once "src/Doctor.php";
+    require_once "src/Patient.php";
 
-    $server = 'mysql:host=localhost;dbname=to_do_test';
+    $server = 'mysql:host=localhost;dbname=doctor_office_test';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
 
-    class CategoryTest extends PHPUnit_Framework_TestCase
+    class DoctorTest extends PHPUnit_Framework_TestCase
     {
 
         protected function tearDown()
         {
-          Category::deleteAll();
-          Task::deleteAll();
+          Doctor::deleteAll();
+          Patient::deleteAll();
         }
 
         function test_getName()
         {
             //Arrange
-            $name = "Work stuff";
-            $test_Category = new Category($name);
+            $name = "Dr. Joe";
+            $test_Doctor = new Doctor($name);
 
             //Act
-            $result = $test_Category->getName();
+            $result = $test_Doctor->getName();
 
             //Assert
             $this->assertEquals($name, $result);
@@ -38,12 +38,12 @@
         function test_getId()
         {
             //Arrange
-            $name = "Work stuff";
+            $name = "Dr. Joe";
             $id = 1;
-            $test_Category = new Category($name, $id);
+            $test_Doctor = new Doctor($name, $id);
 
             //Act
-            $result = $test_Category->getId();
+            $result = $test_Doctor->getId();
 
             //Assert
             $this->assertEquals(true, is_numeric($result));
@@ -52,93 +52,92 @@
         function test_save()
         {
             //Arrange
-            $name = "Work stuff";
-            $test_Category = new Category($name);
-            $test_Category->save();
+            $name = "Dr. Joe";
+            $test_Doctor = new Doctor($name);
+            $test_Doctor->save();
 
             //Act
-            $result = Category::getAll();
+            $result = Doctor::getAll();
 
             //Assert
-            $this->assertEquals($test_Category, $result[0]);
+            $this->assertEquals($test_Doctor, $result[0]);
         }
-
 
         function test_getAll()
         {
             //Arrange
-            $name = "Work stuff";
-            $name2 = "Home stuff";
-            $test_Category = new Category($name);
-            $test_Category->save();
-            $test_Category2 = new Category($name2);
-            $test_Category2->save();
+            $name = "Dr. Joe";
+            $name2 = "Dr. Jill";
+            $test_Doctor = new Doctor($name);
+            $test_Doctor->save();
+            $test_Doctor2 = new Doctor($name2);
+            $test_Doctor2->save();
 
             //Act
-            $result = Category::getAll();
+            $result = Doctor::getAll();
 
             //Assert
-            $this->assertEquals([$test_Category, $test_Category2], $result);
+            $this->assertEquals([$test_Doctor, $test_Doctor2], $result);
         }
 
         function test_deleteAll()
         {
             //Arrange
-            $name = "Wash the dog";
-            $name2 = "Home stuff";
-            $test_Category = new Category($name);
-            $test_Category->save();
-            $test_Category2 = new Category($name2);
-            $test_Category2->save();
+            $name = "Dr. Joe";
+            $name2 = "Dr. Jill";
+            $test_Doctor = new Doctor($name);
+            $test_Doctor->save();
+            $test_Doctor2 = new Doctor($name2);
+            $test_Doctor2->save();
 
             //Act
-            Category::deleteAll();
-            $result = Category::getAll();
+            Doctor::deleteAll();
+            $result = Doctor::getAll();
 
             //Assert
             $this->assertEquals([], $result);
         }
 
-        function test_find()
+        function test_findById()
         {
             //Arrange
-            $name = "Wash the dog";
-            $name2 = "Home stuff";
-            $test_Category = new Category($name);
-            $test_Category->save();
-            $test_Category2 = new Category($name2);
-            $test_Category2->save();
+            $name = "Dr. Joe";
+            $name2 = "Dr. Jill";
+            $test_Doctor = new Doctor($name);
+            $test_Doctor->save();
+            $test_Doctor2 = new Doctor($name2);
+            $test_Doctor2->save();
 
             //Act
-            $result = Category::find($test_Category->getId());
+            $result = Doctor::findById($test_Doctor->getId());
 
             //Assert
-            $this->assertEquals($test_Category, $result);
+            $this->assertEquals($test_Doctor, $result);
         }
 
-        function testGetTasks()
+        function testGetPatients()
         {
             //Arrange
-            $name = "Work stuff";
+            $name = "Dr. Joe";
             $id = null;
-            $test_category = new Category($name, $id);
-            $test_category->save();
+            $test_doctor = new Doctor($name, $id);
+            $test_doctor->save();
 
-            $test_category_id = $test_category->getId();
+            $test_doctor_id = $test_doctor->getId();
 
-            $description = "Email client";
-            $test_task = new Task($description, $id, $test_category_id);
-            $test_task->save();
+            $name2 = "Billy";
+            $test_patient = new Patient($name2, $id, $test_doctor_id);
+            $test_patient->save();
 
-            $description2 = "Meet with boss";
-            $test_task2 = new Task($description2, $id, $test_category_id);
-            $test_task2->save();
+            $name3 = "Bob";
+            $test_patient2 = new Patient($name3, $id, $test_doctor_id);
+            $test_patient2->save();
 
             //Act
-            $result = $test_category->getTasks();
+            $result = $test_doctor->getPatients();
 
             //Assert
-            $this->assertEquals([$test_task, $test_task2], $result);
+            $this->assertEquals([$test_patient, $test_patient2], $result);
         }
     }
 
