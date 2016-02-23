@@ -1,11 +1,11 @@
 <?php
     require_once __DIR__."/../vendor/autoload.php";
-    require_once __DIR__."/../src/Task.php";
-    require_once __DIR__."/../src/Category.php";
+    require_once __DIR__."/../src/Patient.php";
+    require_once __DIR__."/../src/Doctor.php";
 
     $app = new Silex\Application();
 
-    $server = 'mysql:host=localhost;dbname=to_do';
+    $server = 'mysql:host=localhost;dbname=doctor_office';
     $username = 'root';
     $password = 'root';
     $DB = new PDO($server, $username, $password);
@@ -17,56 +17,55 @@
     ));
 
     $app->get("/", function() use ($app) {
-        return $app['twig']->render('index.html.twig', array('categories' => Category::getAll()));
+        return $app['twig']->render('index.html.twig', array('doctors' => Doctor::getAll()));
     });
 
-    $app->get("/tasks", function() use ($app) {
-        return $app['twig']->render('tasks.html.twig', array('tasks' => Task::getAll()));
+    $app->get("/patients", function() use ($app) {
+        return $app['twig']->render('patients.html.twig', array('patients' => Patient::getAll()));
     });
 
-    $app->get("/categories", function() use ($app) {
-        return $app['twig']->render('categories.html.twig', array('categories' => Category::getAll()));
+    $app->get("/doctors", function() use ($app) {
+        return $app['twig']->render('doctors.html.twig', array('doctors' => Doctor::getAll()));
     });
 
-    $app->get("/categories/{id}", function($id) use ($app) {
-        $category = Category::findById($id);
-        return $app['twig']->render('categories.html.twig', array('category' => $category, 'tasks' => $category->getTasks()));
+    $app->get("/doctors/{id}", function($id) use ($app) {
+        $doctor = Doctor::findById($id);
+        return $app['twig']->render('doctors.html.twig', array('doctor' => $doctor, 'patients' => $doctor->getPatients()));
     });
 
-    $app->post("/tasks", function() use ($app) {
-        $description = $_POST['description'];
-        $category_id = $_POST['category_id'];
-        $due_date = $_POST['due_date'];
-        $task = new Task($description, $due_date, $id = null, $category_id);
-        $task->save();
-        $category = Category::findById($category_id);
-        return $app['twig']->render('categories.html.twig', array('category' => $category, 'tasks' => $category->getTasks()));
+    $app->post("/patients", function() use ($app) {
+        $name = $_POST['name'];
+        $doctor_id = $_POST['doctor_id'];
+        $patient = new Patient($name, $id = null, $doctor_id);
+        $patient->save();
+        $doctor = Doctor::findById($doctor_id);
+        return $app['twig']->render('doctors.html.twig', array('doctor' => $doctor, 'patients' => $doctor->getPatients()));
     });
 
-    $app->post("/delete_tasks/{id}", function($id) use ($app) {
-        $category_id = Category::findById($id);
-        Task::deleteFromCategory($category_id->getId());
+    $app->post("/delete_patients/{id}", function($id) use ($app) {
+        $doctor_id = Doctor::findById($id);
+        Patient::deleteFromDoctor($doctor_id->getId());
 
-        return $app['twig']->render('categories.html.twig', array('category' => $category_id));
+        return $app['twig']->render('doctors.html.twig', array('doctor' => $doctor_id));
     });
 
-    $app->post("/categories", function() use ($app) {
-        $category = new Category($_POST['name']);
-        $category->save();
-        return $app['twig']->render('index.html.twig', array('categories' => Category::getAll()));
+    $app->post("/doctors", function() use ($app) {
+        $doctor = new Doctor($_POST['doctor_name']);
+        $doctor->save();
+        return $app['twig']->render('index.html.twig', array('doctors' => Doctor::getAll()));
     });
 
-    $app->post("/delete_categories", function() use ($app) {
-        Category::deleteCategories();
+    $app->post("/delete_doctors", function() use ($app) {
+        Doctor::deleteDoctors();
         return $app['twig']->render('index.html.twig');
     });
 
     // $app->post("/date_search", function() use ($app) {
-    //     // $category_id = Category::findById($id);
+    //     // $doctor_id = Doctor::findById($id);
     //     $search_date = $_POST['search_date'];
-    //     Task::findByDate($search_date);
+    //     Patient::findByDate($search_date);
     //
-    //     return $app['twig']->render('categories.html.twig', array('category' => $category, 'tasks' => $category->searchByDate()));
+    //     return $app['twig']->render('doctors.html.twig', array('doctor' => $doctor, 'patients' => $doctor->searchByDate()));
     // });
 
     return $app;

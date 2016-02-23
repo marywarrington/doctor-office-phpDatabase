@@ -1,43 +1,31 @@
 <html>
     <head>
-        <title>To Do List</title>
+        <title>Doctor Office</title>
     </head>
     <body>
-        <h1>{{ category.getName }}</h1>
+        <h1>{{ doctor.getName }}</h1>
 
-        {% if tasks is not empty %}
-            <p>Here are the tasks:</p>
+        {% if patients is not empty %}
+            <p>Here are the patients:</p>
             <ul>
-                {% for task in tasks %}
-                    <li>{{ task.getDescription }}, due {{ task.getDueDate }}</li>
+                {% for patient in patients %}
+                    <li>{{ patient.getName }}</li>
                 {% endfor %}
             </ul>
-            <form action='/delete_tasks/{{ category.getId }}' method='post'>
-                <button type='submit'>Delete Task List</button>
+            <form action='/delete_patients/{{ doctor.getId }}' method='post'>
+                <button type='submit'>Delete Patient List</button>
             </form>
         {% endif %}
 
-        <h4>Add a task</h4>
+        <h4>Add a patient</h4>
 
-        <form action='/tasks' method='post'>
-            <input id="category_id" name="category_id" type="hidden" value="{{ category.getId() }}">
-            <label for='description'>Task Description</label>
-            <input id='description' name='description' type='text'>
-            <label for='due_date'>Due Date</label>
-            <input id='due_date' name='due_date' type='date'>
+        <form action='/patients' method='post'>
+            <input id="doctor_id" name="doctor_id" type="hidden" value="{{ doctor.getId() }}">
+            <label for='name'>Patient Name</label>
+            <input id='name' name='name' type='text'>
 
-            <button type='submit'>Add task</button>
+            <button type='submit'>Add patient</button>
         </form>
-        <!-- {% if tasks is not empty %} -->
-
-        <h4>Search for a Task by Due Date</h4>
-        <form action='/date_search' method='post'>
-            <label for='search_date'>Due Date (YEAR-XX-XX)</label>
-            <input id='search_date' name='search_date' type='date'>
-            <button type='submit'>Search for tasks</button>
-        </form>
-        <!-- {% endif %} -->
-
         <p><a href='/'>Home</a></p>
     </body>
 </html>

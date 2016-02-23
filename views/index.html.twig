@@ -3,29 +3,29 @@
         <title>To Do List</title>
     </head>
     <body>
-        <h1>Welcome to To Do List</h1>
+        <h1>Welcome to the Doctor Office</h1>
 
-        <p>Create a new category:</p>
+        <p>Add A New Doctor:</p>
 
-        <form action="/categories" method="post">
-            <label for="name">Category name:</label>
-            <input id="name" name="name" type="text">
+        <form action="/doctors" method="post">
+            <label for="doctor_name">Doctor Name:</label>
+            <input id="doctor_name" name="doctor_name" type="text">
 
-            <button type="submit">Add category</button>
+            <button type="submit">Add doctor</button>
         </form>
 
-        {% if categories is not empty %}
-            <p>Here are all your categories:</p>
+        {% if doctors is not empty %}
+            <p>Here are all your doctors:</p>
             <ul>
-                {% for category in categories %}
-                    <li><a href="/categories/{{ category.getId }}">{{ category.getName }}</a></li>
+                {% for doctor in doctors %}
+                    <li><a href="/doctors/{{ doctor.getId }}">{{ doctor.getName }}</a></li>
                 {% endfor %}
             </ul>
-            <form action='/delete_categories' method='post'>
-                <button type='submit'>Delete Categories</button>
+            <form action='/delete_doctors' method='post'>
+                <button type='submit'>Delete Doctors</button>
             </form>
         {% else %}
-          <p>There are no categories yet!</p>
+          <p>There are no doctors yet!</p>
         {% endif %}
 
     </body>
