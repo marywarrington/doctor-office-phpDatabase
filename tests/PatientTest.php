@@ -78,12 +78,12 @@
             $name1 = "Billy";
             $doctor_id = $test_doctor->getId();
             $test_patient = new Patient($name1, $id, $doctor_id);
-
-            //Act
             $test_patient->save();
 
-            //Assert
+            //Act
             $result = Patient::getAll();
+
+            //Assert
             $this->assertEquals($test_patient, $result[0]);
         }
 

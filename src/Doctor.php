@@ -34,7 +34,7 @@
 
         function save()
         {
-            $GLOBALS['DB']->exec("INSERT INTO doctors (name) VALUES ('{$this->getName()}')");
+            $GLOBALS['DB']->exec("INSERT INTO doctors (name, specialty_id) VALUES ('{$this->getName()}', {$this->getSpecialtyId()})");
             $this->id= $GLOBALS['DB']->lastInsertId();
         }
 
@@ -45,7 +45,8 @@
             foreach($returned_doctors as $doctor) {
                 $name = $doctor['name'];
                 $id = $doctor['id'];
-                $new_doctor = new Doctor($name, $id);
+                $specialty_id = $doctor['specialty_id'];
+                $new_doctor = new Doctor($name, $id, $specialty_id);
                 array_push($doctors, $new_doctor);
             }
             return $doctors;
