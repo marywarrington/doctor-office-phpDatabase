@@ -3,11 +3,13 @@
     {
         private $name;
         private $id;
+        private $specialty_id;
 
-        function __construct($doctor_name, $doctor_id = null)
+        function __construct($doctor_name, $doctor_id = null, $doctor_specialty_id)
         {
             $this->name = $doctor_name;
             $this->id = $doctor_id;
+            $this->specialty_id = $doctor_specialty_id;
         }
 
         function setName($new_name)
@@ -23,6 +25,11 @@
         function getId()
         {
             return $this->id;
+        }
+
+        function getSpecialtyId()
+        {
+            return $this->specialty_id;
         }
 
         function save()
