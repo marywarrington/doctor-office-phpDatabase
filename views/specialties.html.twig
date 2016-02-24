@@ -5,11 +5,20 @@
     <body>
         <h1>{{ specialty.getName }}</h1>
 
+        <h4>Add a doctor</h4>
+
+        <form action='/doctors' method='post'>
+            <label for='doctor_name'>Doctor Name:</label>
+            <input id="specialty_id" name="specialty_id" type="hidden" value="{{ specialty.getId }}">
+            <input id='doctor_name' name='doctor_name' type='text'>
+            <button type='submit'>Add doctor</button>
+        </form>
+
         {% if doctors is not empty %}
             <p>Here are the doctors:</p>
             <ul>
                 {% for doctor in doctors %}
-                    <li>{{ doctor.getName }}</li>
+                <li><a href="/doctors/{{ doctor.getId }}">{{ doctor.getName }}</a></li>
                 {% endfor %}
             </ul>
             <form action='/delete_doctors/{{ specialty.getId }}' method='post'>
@@ -17,15 +26,6 @@
             </form>
         {% endif %}
 
-        <h4>Add a doctor</h4>
-
-        <form action='/doctors' method='post'>
-            <input id="specialty_id" name="specialty_id" type="hidden" value="{{ specialty.getId() }}">
-            <label for='doctor_name'>Doctor Name</label>
-            <input id='doctor_name' name='doctor_name' type='text'>
-
-            <button type='submit'>Add doctor</button>
-        </form>
         <p><a href='/'>Home</a></p>
     </body>
 </html>
