@@ -73,6 +73,11 @@ class Specialty
         return $doctors;
     }
 
+    static function deleteSpecialties()
+        {
+          $GLOBALS['DB']->exec("DELETE FROM specialities;");
+        }
+
     static function deleteAll()
     {
         $GLOBALS['DB']->exec("DELETE FROM specialities;");

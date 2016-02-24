@@ -71,6 +71,11 @@
           $GLOBALS['DB']->exec("DELETE FROM doctors;");
         }
 
+        static function deleteFromSpecialty($doctor_id)
+        {
+            $GLOBALS['DB']->exec("DELETE FROM doctors WHERE specialty_id = {$specialty_id};");
+        }
+
         static function findById($search_id)
         {
             $found_doctor = null;

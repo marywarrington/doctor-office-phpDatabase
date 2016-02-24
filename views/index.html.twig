@@ -1,6 +1,38 @@
 <html>
     <head>
-        <title>To Do List</title>
+        <title>Doctor Office</title>
+    </head>
+    <body>
+        <h1>Welcome to the Doctor Office</h1>
+
+        <p>Add A New Specialty:</p>
+
+        <form action="/specialties" method="post">
+            <label for="specialty_name">Specialty Name:</label>
+            <input id="specialty_name" name="specialty_name" type="text">
+
+            <button type="submit">Add specialty</button>
+        </form>
+
+        {% if specialties is not empty %}
+            <p>Here are all your specialties:</p>
+            <ul>
+                {% for specialty in specialties %}
+                    <li><a href="/specialties/{{ specialty.getId }}">{{ specialty.getName }}</a></li>
+                {% endfor %}
+            </ul>
+            <form action='/delete_specialties' method='post'>
+                <button type='submit'>Delete Specialties</button>
+            </form>
+        {% else %}
+          <p>There are no specialties yet!</p>
+        {% endif %}
+    </body>
+</html>
+
+<!-- <html>
+    <head>
+        <title>Doctor Office</title>
     </head>
     <body>
         <h1>Welcome to the Doctor Office</h1>
@@ -29,4 +61,4 @@
         {% endif %}
 
     </body>
-</html>
+</html> -->
